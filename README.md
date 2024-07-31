@@ -1,5 +1,3 @@
-# Название сценария
+# **Загрузка данных из YDB в Yandex Object Storage с помощью Yandex Data Transfer**
 
-Описание сценария и инструкция по его применению.
-
-Для практических руководств обязательна ссылка на документацию.
+С помощью сервиса [Data Transfer](https://yandex.cloud/ru/docs/data-transfer) можно перенести данные из базы данных [Yandex Managed Service for YDB](https://yandex.cloud/ru/docs/ydb/) в [Yandex Object Storage](https://yandex.cloud/ru/docs/storage/). Настройка через Terraform описана в [практическом руководстве](https://cloud.yandex.ru/ru/docs/data-transfer/tutorials/ydb-to-object-storage). Необходимый для настройки конфигурационный файл [ydb-to-object-storage.tf](https://github.com/yandex-cloud-examples/yc-data-transfer-from-ydb-to-object-storage/blob/main/ydb-to-object-storage.tf) расположен в этом репозитории.
