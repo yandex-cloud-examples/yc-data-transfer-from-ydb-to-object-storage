@@ -2,7 +2,7 @@ locals {
   folder_id   = "" # Your cloud folder ID, same as for provider
   bucket_name = "" # Name of an Object Storage bucket. Must be unique in the Cloud
 
-  # Specify these settings ONLY AFTER the clusters are created. Then run "terraform apply" command again
+  # Specify these settings ONLY AFTER the YDB database and bucket are created. Then run "terraform apply" command again
   # You should set up endpoints using the GUI to obtain their IDs
   source_endpoint_id = "" # Source endpoint ID
   target_endpoint_id = "" # Target endpoint ID
@@ -19,12 +19,12 @@ locals {
 
 resource "yandex_vpc_network" "network" {
   description = "Network for the Object Storage bucket and Managed Service for YDB"
-  name        = "network"
+  name        = local.network_name
 }
 
 resource "yandex_vpc_subnet" "subnet-a" {
   description    = "Subnet in the ru-central1-a availability zone"
-  name           = "subnet-a"
+  name           = local.subnet_name
   zone           = "ru-central1-a"
   network_id     = yandex_vpc_network.network.id
   v4_cidr_blocks = ["10.1.0.0/16"]
@@ -32,7 +32,7 @@ resource "yandex_vpc_subnet" "subnet-a" {
 
 resource "yandex_vpc_security_group" "security-group" {
   description = "Security group for the Managed Service for YDB database and Object Storage bucket"
-  name        = "security-group"
+  name        = local.security_group_name
   network_id  = yandex_vpc_network.network.id
 
   ingress {
@@ -55,12 +55,12 @@ resource "yandex_vpc_security_group" "security-group" {
 resource "yandex_iam_service_account" "sa-for-transfer" {
   description = "A service account to manage buckets and access YDB database"
   folder_id   = local.folder_id
-  name        = "sa-for-transfer"
+  name        = local.sa_name
 }
 
 # Create a serverless YDB database
 resource "yandex_ydb_database_serverless" "ydb-database" {
-  name        = "ydb-database"
+  name        = local.ydb_database_name
   location_id = "ru-central1"
 }
 
